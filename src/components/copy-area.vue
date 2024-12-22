@@ -42,7 +42,7 @@ const copyText = () => {
 };
 
 const limitString = (text) => {
-  const limit = 20;
+  const limit = 23;
   return text.length > limit ? `${text.substring(0, limit)}...` : text;
 };
 </script>

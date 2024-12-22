@@ -23,6 +23,10 @@ const Helpers = {
     });
   },
 
+  async focusTab(tabId) {
+    await chrome.tabs.update(tabId, { active: true });
+  },
+
   isValidStoreId(selectionText) {
     return /^[0-9]+$/.test(selectionText);
   },

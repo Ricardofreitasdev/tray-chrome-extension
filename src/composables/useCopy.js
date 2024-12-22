@@ -6,7 +6,7 @@ export default function useCopy() {
   const copy = async (text) => {
     try {
       await navigator.clipboard.writeText(text);
-      $toast.push(`${text} copiado para a área de transferência.`);
+      $toast.push(`${text} copiado com sucesso.`);
     } catch (error) {
       $toast.push(`Erro ao copiar ${text}: ${error}`);
     }

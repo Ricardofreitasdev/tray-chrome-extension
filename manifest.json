@@ -1,7 +1,7 @@
 {
   "name": "Tray Chrome Extension",
   "description": "Extensão para trabalhar com lojas Tray",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "manifest_version": 3,
   "background": {
     "service_worker": "src/chrome/index.js",

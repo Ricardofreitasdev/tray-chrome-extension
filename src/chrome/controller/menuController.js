@@ -1,6 +1,6 @@
 import Helpers from '../helpers/index.js';
-import Scripts from '../scripts/index.js';
 import Messages from '../messages/index.js';
+import ActionsController from './actionsController.js';
 
 const MenuController = {
   async openSecureDomain(info) {
@@ -36,36 +36,14 @@ const MenuController = {
     }
   },
 
-  async openDashboard(info, tab) {
-    const tabId = tab.id;
+  async openDashboard(info) {
     const codigo = encodeURIComponent(info.selectionText);
-    const configs = Helpers.getConfigs();
 
     if (!Helpers.isValidStoreId(codigo)) {
       throw new Error(Messages.error('INVALID_STORE_ID'));
     }
 
-    await chrome.tabs.update(tabId, {
-      url: configs?.dashboard?.userId,
-    });
-
-    await Helpers.awaitForTabUpdate(tabId);
-
-    const [{ result }] = await chrome.scripting.executeScript({
-      target: { tabId },
-      func: Scripts.getUserId,
-    });
-
-    await chrome.tabs.update(tabId, {
-      url: configs?.dashboard?.url + codigo + '|' + result,
-    });
-
-    await Helpers.awaitForTabUpdate(tabId);
-
-    await chrome.scripting.executeScript({
-      target: { tabId },
-      func: Scripts.goToDashboard,
-    });
+    await ActionsController.handleDashboardLogin(codigo);
   },
 };
 

@@ -38,6 +38,7 @@ const Scripts = {
 
       if (match && match[1]) {
         server = match[1];
+        server = server?.replace(' - store', '');
       }
     }
 

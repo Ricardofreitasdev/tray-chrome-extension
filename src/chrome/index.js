@@ -49,14 +49,22 @@ const menuListener = async (info, tab) => {
 };
 
 const contextMenus = {
+  createdIds: new Set(),
   create() {
-    chrome.contextMenus.create({
+    const createMenu = ({ id, title, contexts }) => {
+      if (!this.createdIds.has(id)) {
+        chrome.contextMenus.create({ id, title, contexts });
+        this.createdIds.add(id);
+      }
+    };
+
+    createMenu({
       id: 'openSecureDomain',
       title: 'Abrir domínio seguro',
       contexts: ['selection'],
     });
 
-    chrome.contextMenus.create({
+    createMenu({
       id: 'openCommerceSuite',
       title: 'Abrir CommerceSuite',
       contexts: ['selection'],
@@ -64,7 +72,7 @@ const contextMenus = {
 
     const configs = Helpers.getConfigs();
     if (configs?.dashboard?.userId) {
-      chrome.contextMenus.create({
+      createMenu({
         id: 'openDashboard',
         title: 'Abrir Dashboard',
         contexts: ['selection'],
@@ -73,6 +81,6 @@ const contextMenus = {
   },
 };
 
-chrome.runtime.onInstalled.addListener(contextMenus.create());
+chrome.runtime.onInstalled.addListener(() => contextMenus.create());
 chrome.contextMenus.onClicked.addListener(menuListener);
 chrome.runtime.onMessage.addListener(messageListener);

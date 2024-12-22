@@ -47,31 +47,8 @@ const ActionsController = {
     return message;
   },
 
-  async goToDashboard({ tabId, data }) {
-    const configs = Helpers.getConfigs();
-
-    await chrome.tabs.update(tabId, {
-      url: configs?.dashboard?.userId,
-    });
-
-    await Helpers.awaitForTabUpdate(tabId);
-
-    const [{ result }] = await chrome.scripting.executeScript({
-      target: { tabId },
-      func: Scripts.getUserId,
-    });
-
-    await chrome.tabs.update(tabId, {
-      url: configs?.dashboard?.url + data.id + '|' + result,
-    });
-
-    await Helpers.awaitForTabUpdate(tabId);
-
-    await chrome.scripting.executeScript({
-      target: { tabId },
-      func: Scripts.goToDashboard,
-    });
-
+  async goToDashboard({ data }) {
+    await ActionsController.handleDashboardLogin(data.id);
     return Messages;
   },
 
@@ -109,6 +86,35 @@ const ActionsController = {
       }
     );
     return Messages.success('STORAGE');
+  },
+
+  async handleDashboardLogin(storeId) {
+    const configs = Helpers.getConfigs();
+
+    const getUserIdTab = await chrome.tabs.create({
+      url: configs?.dashboard?.userId,
+      active: false,
+    });
+
+    await Helpers.awaitForTabUpdate(getUserIdTab.id);
+
+    const [{ result }] = await chrome.scripting.executeScript({
+      target: { tabId: getUserIdTab.id },
+      func: Scripts.getUserId,
+    });
+
+    await chrome.tabs.update(getUserIdTab.id, {
+      url: configs?.dashboard?.url + storeId + '|' + result,
+    });
+
+    await Helpers.awaitForTabUpdate(getUserIdTab.id);
+
+    await chrome.scripting.executeScript({
+      target: { tabId: getUserIdTab.id },
+      func: Scripts.goToDashboard,
+    });
+
+    await Helpers.focusTab(getUserIdTab.id);
   },
 };
 
