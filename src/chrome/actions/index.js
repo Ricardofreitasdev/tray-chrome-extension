@@ -134,12 +134,34 @@ const Actions = {
 
   createEnvironmentMapping(items, replaceText) {
     const mapping = {};
-    items.forEach((item) => {
-      mapping[item.environment] = (url) =>
-        item.environment === 'dev' || item.environment === 'tmk'
-          ? url.replace(/^https?:\/\/[^/]+/, item.url)
-          : url.replace(replaceText, item.url);
+
+    const replaceDomainRegex = /^https?:\/\/[^/]+/;
+    const replaceDomainAndFirstPathRegex = /^https?:\/\/[^/]+\/[^/]+/;
+
+    items.forEach(({ environment, url }) => {
+      mapping[environment] = (domain) => {
+        const isReplaceDomainEnv =
+          environment === 'dev' || environment === 'tmk';
+
+        if (isReplaceDomainEnv) {
+          return domain.replace(replaceDomainRegex, url);
+        }
+
+        const isReplaceDomainAndFirstPathEnv = [
+          'com1',
+          'com2',
+          'exc2',
+          'exc1',
+        ].includes(environment);
+
+        if (isReplaceDomainAndFirstPathEnv) {
+          return domain.replace(replaceDomainAndFirstPathRegex, url);
+        }
+
+        return domain.replace(replaceText, url);
+      };
     });
+
     return mapping;
   },
 };
