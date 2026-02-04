@@ -16,7 +16,9 @@ Acesse `chrome://extensions/` com o modo do `desenvolvedor` ativo, click em `car
 
 Com Isso a extensão já irá carregar
 
-![Alt text](./doc/image.png)
+<img width="330" height="555" alt="image" src="https://github.com/user-attachments/assets/733b6f33-3453-4c45-9262-3d8d7534a55a" />
+
+<img width="330" height="555" alt="image" src="https://github.com/user-attachments/assets/86d3e152-9d66-45a9-8b58-752e3021ced4" />
 
 ## Recursos
 
