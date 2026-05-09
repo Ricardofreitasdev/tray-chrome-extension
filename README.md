@@ -6,7 +6,7 @@ Extensão do chrome com recursos que facilitam o trabalho com lojas Tray.
 
 A instalação oficial da extensão passa pelo site:
 
-`https://ricardofreitasdev.github.io/tray-chrome-extension/`
+- [Site Oficial](https://ricardofreitasdev.github.io/tray-chrome-extension/)
 
 Abra esse link em uma nova aba para baixar a versão mais recente e seguir o fluxo de instalação.
 
