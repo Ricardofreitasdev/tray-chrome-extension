@@ -6,6 +6,16 @@ export default function useCopy() {
   const copy = async (text) => {
     try {
       await navigator.clipboard.writeText(text);
+      chrome.runtime
+        .sendMessage({
+          action: 'saveClipboardEntry',
+          data: {
+            text,
+            sourceUrl: window.location.href,
+            title: document.title || 'Extensao',
+          },
+        })
+        .catch(() => {});
       $toast.push(`${text} copiado com sucesso.`);
     } catch (error) {
       $toast.push(`Erro ao copiar ${text}: ${error}`);

@@ -5,6 +5,20 @@ import Helpers from '../helpers/index.js';
 
 const ActionsController = {
   async getStoreData({ tabId }) {
+    const tab = await chrome.tabs.get(tabId);
+    if (Helpers.isRestrictedChromeUrl(tab?.url)) {
+      return {
+        id: '',
+        session: '',
+        title: tab?.title || '',
+        url: tab?.url || '',
+        currentUrl: tab?.url || '',
+        isTray: false,
+        hasCSP: false,
+        server: '',
+      };
+    }
+
     const [{ result }] = await chrome.scripting.executeScript({
       target: { tabId },
       func: Scripts.storeDataByHtml,
@@ -18,6 +32,16 @@ const ActionsController = {
   },
 
   async getStoreIntegrations({ tabId }) {
+    const tab = await chrome.tabs.get(tabId);
+    if (Helpers.isRestrictedChromeUrl(tab?.url)) {
+      return {
+        gtm: '',
+        analyticsGa4: '',
+        analyticsUa: '',
+        facebookPixel: '',
+      };
+    }
+
     const [{ result }] = await chrome.scripting.executeScript({
       target: { tabId },
       func: Scripts.storeIntegrationsByHtml,
@@ -27,6 +51,11 @@ const ActionsController = {
   },
 
   async getInlineScripts({ tabId }) {
+    const tab = await chrome.tabs.get(tabId);
+    if (Helpers.isRestrictedChromeUrl(tab?.url)) {
+      return { inlineScripts: [], totalBlockedScripts: 0 };
+    }
+
     const [{ result }] = await chrome.scripting.executeScript({
       target: { tabId },
       func: Scripts.getInlineScriptsWithoutNonce,
@@ -36,12 +65,29 @@ const ActionsController = {
   },
 
   async getExternalScripts({ tabId }) {
+    const tab = await chrome.tabs.get(tabId);
+    if (Helpers.isRestrictedChromeUrl(tab?.url)) {
+      return { externalScripts: [], totalExternalScripts: 0 };
+    }
+
     const [{ result }] = await chrome.scripting.executeScript({
       target: { tabId },
       func: Scripts.getExternalScripts,
     });
 
     return result;
+  },
+
+  async getClipboardHistory() {
+    return await Actions.getClipboardHistory();
+  },
+
+  async saveClipboardEntry({ data }) {
+    return await Actions.saveClipboardEntry(data);
+  },
+
+  async clearClipboardHistory() {
+    return await Actions.clearClipboardHistory();
   },
 
   async layoutOff({ tabId, tabUrl }) {

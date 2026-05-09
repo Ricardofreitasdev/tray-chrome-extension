@@ -6,6 +6,7 @@ export default class Messages {
     CHANGE_URL: 'Ambiente atualizado com sucesso!',
     STORAGE: 'Storage limpo com sucesso!',
     DASHBOARD: 'Painel aberto com sucesso!',
+    CLIPBOARD_CLEARED: 'Historico de copias limpo com sucesso!',
   };
 
   static ERROR_MESSAGES = {
