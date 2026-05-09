@@ -8,6 +8,15 @@
     "service_worker": "src/chrome/index.js",
     "type": "module"
   },
+  "commands": {
+    "capture-screenshot": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+Y",
+        "mac": "Command+Shift+Y"
+      },
+      "description": "Capturar print da aba atual"
+    }
+  },
   "content_scripts": [
     {
       "matches": ["<all_urls>"],

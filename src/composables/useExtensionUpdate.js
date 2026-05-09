@@ -20,7 +20,10 @@ export default function useExtensionUpdate() {
 
     try {
       const updatePayload = await fetchLatestVersion(getDefaultUpdateUrl());
-      const comparison = compareVersions(packageJson.version, updatePayload.version);
+      const comparison = compareVersions(
+        packageJson.version,
+        updatePayload.version
+      );
       const hasUpdate = comparison === 1;
 
       $store.setUpdate({

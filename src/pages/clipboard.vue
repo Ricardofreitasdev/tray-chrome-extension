@@ -91,6 +91,10 @@ onMounted(async () => {
     font-size: 11px;
     color: $text-color;
   }
+
+  code {
+    font-size: 9px;
+  }
 }
 
 .clipboard-item {

@@ -4,6 +4,25 @@ import Scripts from '../scripts/index.js';
 import Helpers from '../helpers/index.js';
 
 const ActionsController = {
+  async captureScreenshotForTab(tabId) {
+    const tab = await chrome.tabs.get(tabId);
+
+    if (!tab?.windowId || !tab?.url || Helpers.isRestrictedChromeUrl(tab.url)) {
+      throw new Error(Messages.error('SCREENSHOT_CAPTURE'));
+    }
+
+    const image = await chrome.tabs.captureVisibleTab(tab.windowId, {
+      format: 'png',
+    });
+
+    await chrome.tabs.sendMessage(tabId, {
+      action: 'openScreenshotEditor',
+      data: {
+        image,
+      },
+    });
+  },
+
   async getStoreData({ tabId }) {
     const tab = await chrome.tabs.get(tabId);
     if (Helpers.isRestrictedChromeUrl(tab?.url)) {
@@ -88,6 +107,11 @@ const ActionsController = {
 
   async clearClipboardHistory() {
     return await Actions.clearClipboardHistory();
+  },
+
+  async captureScreenshot({ tabId }) {
+    await ActionsController.captureScreenshotForTab(tabId);
+    return Messages.success('SCREENSHOT_CAPTURED');
   },
 
   async layoutOff({ tabId, tabUrl }) {
