@@ -19,6 +19,7 @@ export const useStoreDataStore = defineStore('storeData', {
       facebookPixel: '',
     },
     storeHistory: [],
+    clipboardHistory: [],
     configs: {
       easy: [],
       central: [],
@@ -58,6 +59,9 @@ export const useStoreDataStore = defineStore('storeData', {
     },
     setStoreHistory(history) {
       this.storeHistory = history;
+    },
+    setClipboardHistory(history) {
+      this.clipboardHistory = history || [];
     },
     setConfigs(configs) {
       this.configs = configs;

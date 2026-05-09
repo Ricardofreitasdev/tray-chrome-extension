@@ -8,6 +8,9 @@
         <Settings />
       </template>
       <template #tab-content-2>
+        <Clipboard />
+      </template>
+      <template #tab-content-3>
         <Dev />
       </template>
     </Tabs>
@@ -26,6 +29,7 @@ import { ref, onMounted } from 'vue';
 
 import Tabs from './components/tabs.vue';
 import Store from './pages/store.vue';
+import Clipboard from './pages/clipboard.vue';
 import Dev from './pages/dev.vue';
 import Settings from './pages/settings.vue';
 import Messages from './components/messages.vue';
@@ -37,7 +41,12 @@ import useExtensionUpdate from './composables/useExtensionUpdate';
 
 const version = ref(packageJson.version);
 const $store = useStoreDataStore();
-const { getStoreData, getStoreIntegrations, getStoreHistory } =
+const {
+  getStoreData,
+  getStoreIntegrations,
+  getStoreHistory,
+  getClipboardHistory,
+} =
   useBrowserAction();
 const { checkForUpdates } = useExtensionUpdate();
 
@@ -47,6 +56,7 @@ onMounted(async () => {
   $store.setStoreData(await getStoreData());
   $store.setIntegrations(await getStoreIntegrations());
   $store.setStoreHistory(await getStoreHistory());
+  $store.setClipboardHistory(await getClipboardHistory());
   await checkForUpdates({ silent: true });
 });
 </script>

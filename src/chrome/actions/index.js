@@ -7,6 +7,8 @@ const REMOVE_JS_CHECKOUT_PARAM = 'js=0';
 const REMOVE_JS_FRONT_PARAM = 'jsOff=1';
 const CENTRAL_PREFIX = 'my-account';
 const CHECKOUT_PREFIX = 'checkout';
+const CLIPBOARD_HISTORY_KEY = 'clipboardHistory';
+const MAX_CLIPBOARD_ITEMS = 10;
 
 const Actions = {
   removeLayoutByParam(url) {
@@ -98,6 +100,76 @@ const Actions = {
     }
 
     chrome.storage.local.set({ history: currentHistory });
+  },
+
+  async getClipboardHistory() {
+    const { [CLIPBOARD_HISTORY_KEY]: clipboardHistory } = await new Promise(
+      (resolve, reject) => {
+        chrome.storage.local.get(CLIPBOARD_HISTORY_KEY, (data) => {
+          if (chrome.runtime.lastError) {
+            reject(chrome.runtime.lastError);
+          } else {
+            resolve(data);
+          }
+        });
+      }
+    );
+
+    return clipboardHistory || [];
+  },
+
+  async saveClipboardEntry(data) {
+    const text = String(data?.text || '').trim();
+
+    if (!text) {
+      return { saved: false };
+    }
+
+    const clipboardHistory = await this.getClipboardHistory();
+    const nextItem = {
+      id: `${Date.now()}-${Math.random().toString(16).slice(2, 8)}`,
+      text,
+      sourceUrl: data?.sourceUrl || '',
+      title: data?.title || '',
+      createdAt: new Date().toISOString(),
+    };
+
+    const filteredHistory = clipboardHistory.filter(
+      (item) => item.text !== text
+    );
+
+    filteredHistory.unshift(nextItem);
+
+    const normalizedHistory = filteredHistory.slice(0, MAX_CLIPBOARD_ITEMS);
+
+    await new Promise((resolve, reject) => {
+      chrome.storage.local.set(
+        { [CLIPBOARD_HISTORY_KEY]: normalizedHistory },
+        () => {
+          if (chrome.runtime.lastError) {
+            reject(chrome.runtime.lastError);
+          } else {
+            resolve();
+          }
+        }
+      );
+    });
+
+    return { saved: true, item: nextItem };
+  },
+
+  async clearClipboardHistory() {
+    await new Promise((resolve, reject) => {
+      chrome.storage.local.set({ [CLIPBOARD_HISTORY_KEY]: [] }, () => {
+        if (chrome.runtime.lastError) {
+          reject(chrome.runtime.lastError);
+        } else {
+          resolve();
+        }
+      });
+    });
+
+    return Messages.success('CLIPBOARD_CLEARED');
   },
 
   changeUrl({ currentUrl, environment }) {

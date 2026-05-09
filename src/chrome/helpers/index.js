@@ -30,6 +30,10 @@ const Helpers = {
   isValidStoreId(selectionText) {
     return /^[0-9]+$/.test(selectionText);
   },
+
+  isRestrictedChromeUrl(url = '') {
+    return /^(chrome|chrome-extension|edge|about):\/\//.test(url);
+  },
 };
 
 export default Helpers;

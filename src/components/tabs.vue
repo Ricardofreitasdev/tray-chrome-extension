@@ -28,7 +28,7 @@ import { onMounted, ref } from 'vue';
 import environments from '../config';
 
 const activeTab = ref(0);
-const tabs = ref(['Loja', 'Ferramentas']);
+const tabs = ref(['Loja', 'Ferramentas', 'Clipboard']);
 
 onMounted(() => {
   setDevEnvironment();

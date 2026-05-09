@@ -52,6 +52,11 @@ export default function useBrowserAction() {
       $toast.push(response);
     },
 
+    clearClipboardHistory: async () => {
+      const response = await browser.sendMessage('clearClipboardHistory');
+      $toast.push(response);
+    },
+
     verifyInlineScript: async ({ hasCSP, id }) => {
       const { inlineScripts, totalBlockedScripts } =
         await browser.sendMessage('getInlineScripts');
@@ -146,6 +151,9 @@ export default function useBrowserAction() {
       await browser.sendMessage('getStoreIntegrations'),
 
     getStoreHistory: async () => await browser.sendMessage('getStoreHistory'),
+
+    getClipboardHistory: async () =>
+      await browser.sendMessage('getClipboardHistory'),
   };
 
   return {

@@ -4,6 +4,29 @@ import Helpers from './helpers/index.js';
 import Messages from './messages/index.js';
 import Scripts from './scripts/index.js';
 
+const injectClipboardManager = async (tabId, url = '') => {
+  if (!tabId || Helpers.isRestrictedChromeUrl(url)) {
+    return;
+  }
+
+  try {
+    await chrome.scripting.executeScript({
+      target: { tabId },
+      files: ['src/chrome/content/clipboard.js'],
+    });
+  } catch {
+    // Ignore tabs where Chrome blocks script injection.
+  }
+};
+
+const injectClipboardManagerInOpenTabs = async () => {
+  const tabs = await chrome.tabs.query({});
+
+  await Promise.all(
+    tabs.map((tab) => injectClipboardManager(tab.id, tab.url || ''))
+  );
+};
+
 const browserController = (message) => {
   const action = ActionsController[message.action];
 
@@ -38,6 +61,10 @@ const menuListener = async (info, tab) => {
   menuController(info, tab)
     .then(() => {})
     .catch(async (error) => {
+      if (Helpers.isRestrictedChromeUrl(tab?.url)) {
+        return;
+      }
+
       await chrome.scripting.executeScript({
         target: { tabId: tab.id },
         func: Scripts.injectMessageInScreen,
@@ -74,5 +101,12 @@ const contextMenus = {
 };
 
 chrome.runtime.onInstalled.addListener(() => contextMenus.create());
+chrome.runtime.onInstalled.addListener(() => injectClipboardManagerInOpenTabs());
+chrome.runtime.onStartup.addListener(() => injectClipboardManagerInOpenTabs());
+chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+  if (changeInfo.status === 'complete') {
+    injectClipboardManager(tabId, tab?.url || '');
+  }
+});
 chrome.contextMenus.onClicked.addListener(menuListener);
 chrome.runtime.onMessage.addListener(messageListener);
