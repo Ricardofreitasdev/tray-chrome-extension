@@ -35,6 +35,15 @@ const ActionsController = {
     return result;
   },
 
+  async getExternalScripts({ tabId }) {
+    const [{ result }] = await chrome.scripting.executeScript({
+      target: { tabId },
+      func: Scripts.getExternalScripts,
+    });
+
+    return result;
+  },
+
   async layoutOff({ tabId, tabUrl }) {
     const { message, newUrl } = Actions.removeLayoutByParam(tabUrl);
     chrome.tabs.update(tabId, { url: newUrl });

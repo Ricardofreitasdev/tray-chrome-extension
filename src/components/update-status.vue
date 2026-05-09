@@ -1,9 +1,9 @@
 <template>
   <section class="update-card" :class="statusClass">
     <div class="header">
-      <div>
+      <div class="copy">
         <strong>Atualizações</strong>
-        <p>{{ statusMessage }}</p>
+        <p v-if="showMessage">{{ statusMessage }}</p>
       </div>
       <button
         class="secondary"
@@ -15,8 +15,8 @@
     </div>
 
     <div class="meta">
-      <span>Atual: {{ currentVersion }}</span>
-      <span v-if="latestVersion">Última: {{ latestVersion }}</span>
+      <span>{{ compactMeta }}</span>
+      <span v-if="showLatestVersion">Ultima: {{ latestVersion }}</span>
     </div>
 
     <div v-if="hasUpdate" class="actions">
@@ -69,7 +69,33 @@ const emit = defineEmits(['check']);
 
 const hasUpdate = computed(() => props.status === 'update-available');
 const isChecking = computed(() => props.status === 'checking');
-const statusClass = computed(() => `is-${props.status}`);
+const hasError = computed(() => props.status === 'error');
+const isCompact = computed(
+  () => !hasUpdate.value && !hasError.value && !isChecking.value
+);
+const statusClass = computed(() => ({
+  [`is-${props.status}`]: true,
+  'is-compact': isCompact.value,
+}));
+const showMessage = computed(() => !isCompact.value);
+const showLatestVersion = computed(
+  () => !!props.latestVersion && props.latestVersion !== props.currentVersion
+);
+const compactMeta = computed(() => {
+  if (isChecking.value) {
+    return 'Verificando versao...';
+  }
+
+  if (hasUpdate.value) {
+    return `Atual: ${props.currentVersion}`;
+  }
+
+  if (hasError.value) {
+    return 'Nao foi possivel validar agora';
+  }
+
+  return `Versao atual: ${props.currentVersion}`;
+});
 
 const statusMessage = computed(() => {
   if (props.message) {
@@ -92,13 +118,18 @@ const statusMessage = computed(() => {
 .header {
   display: flex;
   gap: 12px;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
+
+  .copy {
+    min-width: 0;
+  }
 
   strong {
     color: #f0f6fc;
     display: block;
     margin-bottom: 4px;
+    font-size: 13px;
   }
 
   p {
@@ -112,7 +143,8 @@ const statusMessage = computed(() => {
   gap: 12px;
   flex-wrap: wrap;
   margin-top: 10px;
-  font-size: 12px;
+  font-size: 11px;
+  color: #93a1b3;
 }
 
 .actions {
@@ -127,7 +159,9 @@ button {
   background: rgba(255, 255, 255, 0.06);
   color: #f0f6fc;
   border-radius: 8px;
-  padding: 8px 10px;
+  padding: 7px 10px;
+  font-size: 12px;
+  white-space: nowrap;
   cursor: pointer;
 }
 
@@ -144,5 +178,19 @@ button:disabled {
 .is-error {
   border-color: rgba(248, 81, 73, 0.45);
   background: linear-gradient(135deg, rgba(248, 81, 73, 0.14), rgba(22, 27, 34, 0.96));
+}
+
+.is-compact {
+  padding: 10px 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(255, 255, 255, 0.08);
+
+  .header strong {
+    margin-bottom: 0;
+  }
+
+  .meta {
+    margin-top: 6px;
+  }
 }
 </style>

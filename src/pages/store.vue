@@ -25,6 +25,11 @@
           [CSP] Report de scripts inline sem nonce
         </a>
       </p>
+      <p class="item">
+        <a @click="exportExternalScriptsReport($store.store)">
+          [Scripts] Exportar relatorio de scripts externos
+        </a>
+      </p>
       <hr />
       <app-history />
     </div>
@@ -47,6 +52,7 @@ const {
   facebookConversions,
   verifyInlineScript,
   goToDashboard,
+  exportExternalScriptsReport,
 } = useBrowserAction();
 
 const store = computed(() => ({

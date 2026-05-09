@@ -123,6 +123,39 @@ const Scripts = {
     return { inlineScripts, totalBlockedScripts };
   },
 
+  getExternalScripts: function () {
+    const scriptElements = document.querySelectorAll('script[src]');
+    const platformHosts = ['images.tcdn.com.br', 'images.tcdn.com'];
+
+    const externalScripts = Array.from(scriptElements)
+      .map((script) => {
+        const src = script.src || script.getAttribute('src') || '';
+
+        let host = '';
+        try {
+          host = new URL(src, window.location.href).host;
+        } catch {
+          host = '';
+        }
+
+        return {
+          src,
+          host,
+          async: script.async,
+          defer: script.defer,
+          type: script.type || 'text/javascript',
+          crossorigin: script.crossOrigin || '',
+          referrerpolicy: script.referrerPolicy || '',
+        };
+      })
+      .filter((script) => !platformHosts.includes(script.host));
+
+    return {
+      externalScripts,
+      totalExternalScripts: externalScripts.length,
+    };
+  },
+
   goToDashboard: function () {
     document.querySelector('#motivo').value = 'Analisar a loja';
     document.querySelector('.bottom-google .container a').click();

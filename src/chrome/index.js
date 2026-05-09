@@ -49,24 +49,16 @@ const menuListener = async (info, tab) => {
 };
 
 const contextMenus = {
-  createdIds: new Set(),
-  create() {
+  async create() {
+    await chrome.contextMenus.removeAll();
+
     const createMenu = ({ id, title, contexts }) => {
-      if (!this.createdIds.has(id)) {
-        chrome.contextMenus.create({ id, title, contexts });
-        this.createdIds.add(id);
-      }
+      chrome.contextMenus.create({ id, title, contexts });
     };
 
     createMenu({
       id: 'openSecureDomain',
       title: 'Abrir domínio seguro',
-      contexts: ['selection'],
-    });
-
-    createMenu({
-      id: 'openCommerceSuite',
-      title: 'Abrir CommerceSuite',
       contexts: ['selection'],
     });
 
