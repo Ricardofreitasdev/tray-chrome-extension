@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tray Chrome Extension</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #07111f;
+        --panel: rgba(13, 17, 23, 0.9);
+        --border: rgba(47, 129, 247, 0.2);
+        --accent: #58a6ff;
+        --text: #f0f6fc;
+        --muted: #93a1b3;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background:
+          radial-gradient(circle at top, rgba(47, 129, 247, 0.25), transparent 30%),
+          linear-gradient(180deg, #04070d 0%, var(--bg) 100%);
+        color: var(--text);
+        min-height: 100vh;
+      }
+
+      main {
+        max-width: 760px;
+        margin: 0 auto;
+        padding: 48px 20px;
+      }
+
+      .card {
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        padding: 28px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+      }
+
+      h1 {
+        margin-top: 0;
+        margin-bottom: 12px;
+        font-size: 34px;
+      }
+
+      p {
+        color: var(--muted);
+        line-height: 1.6;
+      }
+
+      .pill {
+        display: inline-flex;
+        padding: 6px 10px;
+        border-radius: 999px;
+        background: rgba(88, 166, 255, 0.12);
+        color: var(--accent);
+        font-size: 14px;
+        margin-bottom: 16px;
+      }
+
+      .actions {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin: 26px 0;
+      }
+
+      a.button {
+        text-decoration: none;
+        border-radius: 10px;
+        padding: 12px 16px;
+        font-weight: 700;
+      }
+
+      a.primary {
+        background: var(--accent);
+        color: #08111d;
+      }
+
+      a.secondary {
+        border: 1px solid rgba(240, 246, 252, 0.14);
+        color: var(--text);
+      }
+
+      code {
+        background: rgba(255, 255, 255, 0.06);
+        border-radius: 6px;
+        padding: 2px 6px;
+      }
+
+      ol {
+        color: var(--muted);
+        padding-left: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section class="card">
+        <span class="pill">Distribuição gratuita via GitHub</span>
+        <h1>Tray Chrome Extension</h1>
+        <p id="version">Carregando informações da última versão...</p>
+
+        <div class="actions">
+          <a id="download-link" class="button primary" href="#">Baixar última versão</a>
+          <a
+            id="release-link"
+            class="button secondary"
+            href="https://github.com/Ricardofreitasdev/Tray-chrome-extension/releases/latest"
+          >
+            Ver release
+          </a>
+        </div>
+
+        <p>
+          Instalação:
+        </p>
+        <ol>
+          <li>Baixe o arquivo <code>.zip</code> da última versão.</li>
+          <li>Descompacte em uma pasta local.</li>
+          <li>Abra <code>chrome://extensions</code>.</li>
+          <li>Ative o modo desenvolvedor.</li>
+          <li>Use <code>Carregar sem compactação</code> apontando para a pasta extraída.</li>
+        </ol>
+      </section>
+    </main>
+
+    <script>
+      fetch('./version.json', { cache: 'no-store' })
+        .then((response) => response.json())
+        .then((payload) => {
+          document.getElementById('version').textContent =
+            'Versão mais recente: ' + payload.version;
+          document.getElementById('download-link').href = payload.downloadUrl;
+          document.getElementById('release-link').href = payload.releaseNotesUrl;
+        })
+        .catch(() => {
+          document.getElementById('version').textContent =
+            'Não foi possível carregar a versão atual.';
+        });
+    </script>
+  </body>
+  </html>
