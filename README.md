@@ -4,7 +4,13 @@ Extensão do chrome com recursos que facilitam o trabalho com lojas Tray.
 
 ## Uso
 
-Para usar a versão simples no seu navegador, basta seguir as orientações:
+A instalação oficial da extensão passa pelo site:
+
+`https://ricardofreitasdev.github.io/tray-chrome-extension/`
+
+Abra esse link em uma nova aba para baixar a versão mais recente e seguir o fluxo de instalação.
+
+Se você preferir instalar manualmente a partir do código-fonte, siga as orientações abaixo.
 
 Click em `code` > `download ZIP`
 
@@ -33,7 +39,7 @@ A extensão agora pode consultar uma `version.json` hospedada no GitHub Pages e 
 
 Fluxo recomendado:
 
-- publicar uma tag no formato `v1.0.5` ou `1.0.5`
+- publicar uma tag no formato `v1.0.6` ou `1.0.6`
 - o GitHub Actions gera o build e cria o arquivo `tray-chrome-extension.zip`
 - o GitHub Release vira a origem do download
 - o GitHub Pages publica a página de instalação e o `version.json`
