@@ -13,7 +13,7 @@ const packageJson = JSON.parse(
 );
 
 const owner = 'Ricardofreitasdev';
-const repo = 'Tray-chrome-extension';
+const repo = 'tray-chrome-extension';
 const releaseBaseUrl = `https://github.com/${owner}/${repo}/releases/latest`;
 
 const payload = {

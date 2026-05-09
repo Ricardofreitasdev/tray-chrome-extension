@@ -1,8 +1,8 @@
 {
   "name": "Tray Chrome Extension",
   "description": "Extensão para trabalhar com lojas Tray",
-  "version": "1.0.4",
-  "homepage_url": "https://ricardofreitasdev.github.io/Tray-chrome-extension/",
+  "version": "1.0.5",
+  "homepage_url": "https://ricardofreitasdev.github.io/tray-chrome-extension/",
   "manifest_version": 3,
   "background": {
     "service_worker": "src/chrome/index.js",

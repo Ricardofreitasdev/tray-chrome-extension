@@ -1,5 +1,5 @@
 const DEFAULT_UPDATE_URL =
-  'https://ricardofreitasdev.github.io/Tray-chrome-extension/version.json';
+  'https://ricardofreitasdev.github.io/tray-chrome-extension/version.json';
 
 function parseVersion(version) {
   return String(version || '')

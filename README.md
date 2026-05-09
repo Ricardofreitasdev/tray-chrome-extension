@@ -12,6 +12,13 @@ Click em `code` > `download ZIP`
 
 Descompacte o ZIP na sua pasta de preferência
 
+Se você clonou o repositório em vez de baixar uma release, gere primeiro o build:
+
+```sh
+yarn install
+yarn build
+```
+
 Acesse `chrome://extensions/` com o modo do `desenvolvedor` ativo, click em `carregar sem compactação`, localize a pasta descompactada e click em `selecionar`
 
 Com Isso a extensão já irá carregar
@@ -26,16 +33,16 @@ A extensão agora pode consultar uma `version.json` hospedada no GitHub Pages e 
 
 Fluxo recomendado:
 
-- publicar uma tag no formato `v1.0.5`
+- publicar uma tag no formato `v1.0.5` ou `1.0.5`
 - o GitHub Actions gera o build e cria o arquivo `tray-chrome-extension.zip`
 - o GitHub Release vira a origem do download
 - o GitHub Pages publica a página de instalação e o `version.json`
 
 Links esperados:
 
-- Página de download: `https://ricardofreitasdev.github.io/Tray-chrome-extension/`
-- Endpoint de versão: `https://ricardofreitasdev.github.io/Tray-chrome-extension/version.json`
-- Última release: `https://github.com/Ricardofreitasdev/Tray-chrome-extension/releases/latest`
+- Página de download: `https://ricardofreitasdev.github.io/tray-chrome-extension/`
+- Endpoint de versão: `https://ricardofreitasdev.github.io/tray-chrome-extension/version.json`
+- Última release: `https://github.com/Ricardofreitasdev/tray-chrome-extension/releases/latest`
 
 Observação: por limitação do Chrome, a extensão não é atualizada silenciosamente quando instalada como `carregar sem compactação`. O fluxo implementado avisa que existe uma nova versão e aponta para o download correto.
 
@@ -79,13 +86,13 @@ Aba Ferramentas
 Clone o repositório
 
 ```sh
-git clone https://github.com/Ricardofreitasdev/Tray-chrome-extension.git
+git clone https://github.com/Ricardofreitasdev/tray-chrome-extension.git
 ```
 
 Entre na pasta do projeto
 
 ```sh
-cd Tray-chrome-extension
+cd tray-chrome-extension
 ```
 
 Instale as dependencias
@@ -105,6 +112,8 @@ Após desenvolvimento faça o build
 ```sh
 yarn build
 ```
+
+Observação: a pasta `dist/` não precisa mais ficar versionada no repositório. Para carregar a extensão localmente após clonar, rode `yarn build` antes de abrir o `chrome://extensions`.
 
 Gerar o pacote instalável:
 

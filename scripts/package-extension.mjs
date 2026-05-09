@@ -20,7 +20,9 @@ const extensionName = 'tray-chrome-extension';
 const assetName = `${extensionName}.zip`;
 const versionedAssetName = `${extensionName}-v${packageJson.version}.zip`;
 
-await rm(releaseDir, { recursive: true, force: true });
+await rm(packageDir, { recursive: true, force: true });
+await rm(path.join(releaseDir, assetName), { force: true });
+await rm(path.join(releaseDir, versionedAssetName), { force: true });
 await mkdir(packageDir, { recursive: true });
 await mkdir(path.join(packageDir, 'src'), { recursive: true });
 
