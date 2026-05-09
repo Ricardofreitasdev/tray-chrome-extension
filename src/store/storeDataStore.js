@@ -24,6 +24,15 @@ export const useStoreDataStore = defineStore('storeData', {
       central: [],
       dashboard: {},
     },
+    update: {
+      status: 'idle',
+      currentVersion: '',
+      latestVersion: '',
+      downloadUrl: '',
+      releaseNotesUrl: '',
+      message: '',
+      checkedAt: '',
+    },
   }),
 
   getters: {
@@ -37,6 +46,7 @@ export const useStoreDataStore = defineStore('storeData', {
     hasDashboardConfig: (state) => !!state.configs.dashboard,
     hasDevUrls: (state) =>
       state.configs.easy.length > 0 || state.configs.central.length > 0,
+    hasAvailableUpdate: (state) => state.update.status === 'update-available',
   },
 
   actions: {
@@ -51,6 +61,12 @@ export const useStoreDataStore = defineStore('storeData', {
     },
     setConfigs(configs) {
       this.configs = configs;
+    },
+    setUpdate(updateData) {
+      this.update = {
+        ...this.update,
+        ...updateData,
+      };
     },
   },
 });

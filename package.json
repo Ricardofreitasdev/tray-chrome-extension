@@ -13,6 +13,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "package": "node scripts/package-extension.mjs",
+    "pages:build": "node scripts/build-pages.mjs",
     "preview": "vite preview",
     "lint": "eslint src",
     "test": "vitest"

@@ -20,6 +20,25 @@ Com Isso a extensão já irá carregar
 
 <img width="330" height="555" alt="image" src="https://github.com/user-attachments/assets/86d3e152-9d66-45a9-8b58-752e3021ced4" />
 
+## Atualizações
+
+A extensão agora pode consultar uma `version.json` hospedada no GitHub Pages e avisar no popup quando existir uma nova versão publicada.
+
+Fluxo recomendado:
+
+- publicar uma tag no formato `v1.0.5`
+- o GitHub Actions gera o build e cria o arquivo `tray-chrome-extension.zip`
+- o GitHub Release vira a origem do download
+- o GitHub Pages publica a página de instalação e o `version.json`
+
+Links esperados:
+
+- Página de download: `https://ricardofreitasdev.github.io/Tray-chrome-extension/`
+- Endpoint de versão: `https://ricardofreitasdev.github.io/Tray-chrome-extension/version.json`
+- Última release: `https://github.com/Ricardofreitasdev/Tray-chrome-extension/releases/latest`
+
+Observação: por limitação do Chrome, a extensão não é atualizada silenciosamente quando instalada como `carregar sem compactação`. O fluxo implementado avisa que existe uma nova versão e aponta para o download correto.
+
 ## Recursos
 
 Aba Loja
@@ -85,4 +104,16 @@ Após desenvolvimento faça o build
 
 ```sh
 yarn build
+```
+
+Gerar o pacote instalável:
+
+```sh
+yarn package
+```
+
+Gerar os arquivos do GitHub Pages localmente:
+
+```sh
+yarn pages:build
 ```
