@@ -7,6 +7,7 @@ export default class Messages {
     STORAGE: 'Storage limpo com sucesso!',
     DASHBOARD: 'Painel aberto com sucesso!',
     CLIPBOARD_CLEARED: 'Historico de copias limpo com sucesso!',
+    SCREENSHOT_CAPTURED: 'Print capturado com sucesso!',
   };
 
   static ERROR_MESSAGES = {
@@ -18,6 +19,7 @@ export default class Messages {
     STORAGE: 'Ocorreu um erro ao limpar o storage!',
     DASHBOARD: 'Ocorreu um erro ao abrir o painel!',
     INVALID_STORE_ID: 'Código de loja inválido',
+    SCREENSHOT_CAPTURE: 'Nao foi possivel capturar o print dessa aba.',
   };
 
   static success(key) {

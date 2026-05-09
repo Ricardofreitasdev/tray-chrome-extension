@@ -27,6 +27,27 @@ const injectClipboardManagerInOpenTabs = async () => {
   );
 };
 
+const commandListener = async (command) => {
+  if (command !== 'capture-screenshot') {
+    return;
+  }
+
+  const [tab] = await chrome.tabs.query({
+    active: true,
+    lastFocusedWindow: true,
+  });
+
+  if (!tab?.id || Helpers.isRestrictedChromeUrl(tab?.url || '')) {
+    return;
+  }
+
+  try {
+    await ActionsController.captureScreenshotForTab(tab.id);
+  } catch {
+    // Ignore command failures in restricted or non-capturable tabs.
+  }
+};
+
 const browserController = (message) => {
   const action = ActionsController[message.action];
 
@@ -101,12 +122,15 @@ const contextMenus = {
 };
 
 chrome.runtime.onInstalled.addListener(() => contextMenus.create());
-chrome.runtime.onInstalled.addListener(() => injectClipboardManagerInOpenTabs());
+chrome.runtime.onInstalled.addListener(() =>
+  injectClipboardManagerInOpenTabs()
+);
 chrome.runtime.onStartup.addListener(() => injectClipboardManagerInOpenTabs());
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
   if (changeInfo.status === 'complete') {
     injectClipboardManager(tabId, tab?.url || '');
   }
 });
+chrome.commands.onCommand.addListener(commandListener);
 chrome.contextMenus.onClicked.addListener(menuListener);
 chrome.runtime.onMessage.addListener(messageListener);

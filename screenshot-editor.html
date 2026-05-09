@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Editor de Print</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #09111d;
+        --panel: #111a27;
+        --panel-border: rgba(255, 255, 255, 0.08);
+        --accent: #ff5a47;
+        --muted: #8ea0b5;
+        --text: #f5f7fb;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: Arial, sans-serif;
+        background:
+          radial-gradient(circle at top, rgba(47, 129, 247, 0.18), transparent 22%),
+          linear-gradient(180deg, #050911 0%, var(--bg) 100%);
+        color: var(--text);
+      }
+
+      .layout {
+        display: grid;
+        grid-template-columns: 280px 1fr;
+        min-height: 100vh;
+      }
+
+      .sidebar {
+        border-right: 1px solid var(--panel-border);
+        background: rgba(10, 14, 22, 0.88);
+        padding: 22px 18px;
+      }
+
+      .sidebar h1 {
+        margin: 0 0 10px;
+        font-size: 24px;
+      }
+
+      .sidebar p {
+        margin: 0 0 18px;
+        color: var(--muted);
+        line-height: 1.5;
+      }
+
+      .actions {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      button {
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: rgba(255, 255, 255, 0.06);
+        color: var(--text);
+        border-radius: 10px;
+        padding: 12px 14px;
+        text-align: left;
+        cursor: pointer;
+      }
+
+      button.primary {
+        background: var(--accent);
+        color: #220502;
+        border-color: transparent;
+        font-weight: 700;
+      }
+
+      .hint {
+        margin-top: 18px;
+        padding: 12px;
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.04);
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.5;
+      }
+
+      .workspace {
+        padding: 22px;
+      }
+
+      .canvas-shell {
+        position: relative;
+        display: inline-block;
+        border-radius: 18px;
+        overflow: hidden;
+        box-shadow: 0 24px 80px rgba(0, 0, 0, 0.36);
+      }
+
+      canvas {
+        display: block;
+        max-width: min(100%, 1300px);
+        height: auto;
+        background: #0d1117;
+      }
+
+      #draw-canvas {
+        position: absolute;
+        inset: 0;
+        cursor: crosshair;
+      }
+
+      .empty {
+        max-width: 520px;
+        padding: 20px;
+        border: 1px dashed rgba(255, 255, 255, 0.16);
+        border-radius: 16px;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+
+      @media (max-width: 900px) {
+        .layout {
+          grid-template-columns: 1fr;
+        }
+
+        .sidebar {
+          border-right: none;
+          border-bottom: 1px solid var(--panel-border);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="layout">
+      <aside class="sidebar">
+        <h1>Editor de print</h1>
+        <p>Desenhe flechas sobre a captura e baixe a imagem final em PNG.</p>
+
+        <div class="actions">
+          <button id="arrow-mode-button">Modo flecha</button>
+          <button id="crop-mode-button">Modo recorte</button>
+          <button id="apply-crop-button">Aplicar recorte</button>
+          <button id="reset-crop-button">Resetar imagem</button>
+          <button class="primary" id="download-button">Baixar imagem final</button>
+          <button id="clear-button">Limpar flechas</button>
+        </div>
+
+        <div class="hint">
+          Use recorte para selecionar a area desejada e depois desenhe flechas.
+          <br />
+          O print salvo usa a imagem original com as anotacoes desenhadas por cima.
+        </div>
+      </aside>
+
+      <main class="workspace">
+        <div id="empty-state" class="empty" hidden>
+          Nao foi encontrada nenhuma captura recente. Volte para a extensao e use
+          a opcao <strong>Capturar print da aba</strong>.
+        </div>
+
+        <div id="canvas-shell" class="canvas-shell" hidden>
+          <canvas id="image-canvas"></canvas>
+          <canvas id="draw-canvas"></canvas>
+        </div>
+      </main>
+    </div>
+
+    <script src="./screenshot-editor.js"></script>
+  </body>
+  </html>

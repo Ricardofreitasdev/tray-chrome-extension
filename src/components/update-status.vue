@@ -5,11 +5,7 @@
         <strong>Atualizações</strong>
         <p v-if="showMessage">{{ statusMessage }}</p>
       </div>
-      <button
-        class="secondary"
-        :disabled="isChecking"
-        @click="emit('check')"
-      >
+      <button class="secondary" :disabled="isChecking" @click="emit('check')">
         {{ isChecking ? 'Verificando...' : 'Verificar' }}
       </button>
     </div>
@@ -108,11 +104,15 @@ const statusMessage = computed(() => {
 
 <style lang="scss" scoped>
 .update-card {
-  background: linear-gradient(135deg, rgba(47, 129, 247, 0.14), rgba(22, 27, 34, 0.96));
+  background: linear-gradient(
+    135deg,
+    rgba(47, 129, 247, 0.14),
+    rgba(22, 27, 34, 0.96)
+  );
   border: 1px solid rgba(47, 129, 247, 0.25);
-  border-radius: 12px;
-  padding: 14px;
-  margin-bottom: 12px;
+  border-radius: 4px;
+  padding: 8px;
+  margin-bottom: 8px;
 }
 
 .header {
@@ -172,16 +172,24 @@ button:disabled {
 
 .is-update-available {
   border-color: rgba(35, 134, 54, 0.55);
-  background: linear-gradient(135deg, rgba(35, 134, 54, 0.2), rgba(22, 27, 34, 0.96));
+  background: linear-gradient(
+    135deg,
+    rgba(35, 134, 54, 0.2),
+    rgba(22, 27, 34, 0.96)
+  );
 }
 
 .is-error {
   border-color: rgba(248, 81, 73, 0.45);
-  background: linear-gradient(135deg, rgba(248, 81, 73, 0.14), rgba(22, 27, 34, 0.96));
+  background: linear-gradient(
+    135deg,
+    rgba(248, 81, 73, 0.14),
+    rgba(22, 27, 34, 0.96)
+  );
 }
 
 .is-compact {
-  padding: 10px 12px;
+  padding: 8px 10px;
   background: rgba(255, 255, 255, 0.03);
   border-color: rgba(255, 255, 255, 0.08);
 

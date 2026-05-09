@@ -57,6 +57,11 @@ export default function useBrowserAction() {
       $toast.push(response);
     },
 
+    captureScreenshot: async () => {
+      const response = await browser.sendMessage('captureScreenshot');
+      $toast.push(response);
+    },
+
     verifyInlineScript: async ({ hasCSP, id }) => {
       const { inlineScripts, totalBlockedScripts } =
         await browser.sendMessage('getInlineScripts');
