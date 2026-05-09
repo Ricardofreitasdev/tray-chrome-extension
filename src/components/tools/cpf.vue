@@ -8,8 +8,10 @@
 <script setup>
 import { ref } from 'vue';
 import copyArea from '../copy-area.vue';
+import useCopy from '../../composables/useCopy';
 
 const cpf = ref('');
+const { copy } = useCopy();
 
 const calcularDigitoVerificador = (digits, weight) => {
   const sum = digits.reduce(
@@ -21,7 +23,7 @@ const calcularDigitoVerificador = (digits, weight) => {
   return dv;
 };
 
-const gerarCPF = () => {
+const gerarCPF = async () => {
   const n = 9;
   const cpfDigits = Array.from({ length: n }, () =>
     Math.floor(Math.random() * 10)
@@ -34,6 +36,7 @@ const gerarCPF = () => {
   cpfDigits.push(dv2);
 
   cpf.value = cpfDigits.join('');
+  await copy(cpf.value);
 };
 </script>
 

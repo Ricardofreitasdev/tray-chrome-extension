@@ -72,6 +72,24 @@ export default function useBrowserAction() {
       $toast.push(`A loja ${id} não tem scripts inlines`);
     },
 
+    exportExternalScriptsReport: async ({ id }) => {
+      const { externalScripts, totalExternalScripts } =
+        await browser.sendMessage('getExternalScripts');
+
+      if (totalExternalScripts > 0) {
+        actions.createExternalScriptsReport(
+          externalScripts,
+          totalExternalScripts,
+          id
+        );
+
+        $toast.push(`Relatório de scripts externos gerado para a loja ${id}`);
+        return;
+      }
+
+      $toast.push(`A loja ${id} não carregou scripts externos`);
+    },
+
     createCSPReport: (data, total, id) => {
       let scriptReport = `Total de Scripts Bloqueados: ${total}\n\n`;
 
@@ -87,6 +105,33 @@ export default function useBrowserAction() {
       const a = document.createElement('a');
       a.href = url;
       a.download = `scripts_inline_sem_nonce_loja-${id}.txt`;
+      a.style.display = 'none';
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+    },
+
+    createExternalScriptsReport: (data, total, id) => {
+      const maxUrlLength = 220;
+      let scriptReport = `Total de Scripts Externos: ${total}\n\n`;
+
+      data.forEach((script, index) => {
+        const limitedUrl =
+          script.src.length > maxUrlLength
+            ? `${script.src.slice(0, maxUrlLength)}...`
+            : script.src;
+
+        scriptReport += `Script ${index + 1}:\n`;
+        scriptReport += '-------------------------------------------\n';
+        scriptReport += `URL: ${limitedUrl}\n\n`;
+      });
+
+      const blob = new Blob([scriptReport], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `scripts_externos_loja-${id}.txt`;
       a.style.display = 'none';
       document.body.appendChild(a);
       a.click();

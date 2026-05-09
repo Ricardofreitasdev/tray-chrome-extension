@@ -57,8 +57,8 @@ onMounted(async () => {
   max-width: 302px;
   width: 450px;
   height: 480px;
-  overflow-y: hidden;
-  padding: 16px;
+  overflow-y: auto;
+  padding: 16px 16px 34px;
   position: relative;
 }
 
@@ -68,10 +68,12 @@ onMounted(async () => {
   align-items: center;
   text-align: center;
   font-size: 10px;
-  bottom: 5px;
+  bottom: 2px;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translateX(-50%);
   position: absolute;
+  opacity: 0.75;
+  white-space: nowrap;
 }
 
 .update-pill {

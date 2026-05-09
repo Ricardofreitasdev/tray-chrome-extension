@@ -22,20 +22,6 @@ const MenuController = {
     chrome.tabs.create({ url: secure_uri });
   },
 
-  async openCommerceSuite(info) {
-    const codigo = encodeURIComponent(info.selectionText);
-
-    if (!Helpers.isValidStoreId(codigo)) {
-      throw new Error(Messages.error('INVALID_STORE_ID'));
-    }
-
-    try {
-      chrome.tabs.create({ url: `https://${codigo}.commercesuite.com.br` });
-    } catch (error) {
-      throw new Error(Messages.error('INVALID_STORE_ID'));
-    }
-  },
-
   async openDashboard(info) {
     const codigo = encodeURIComponent(info.selectionText);
 
