@@ -54,38 +54,57 @@ Observação: por limitação do Chrome, a extensão não é atualizada silencio
 
 ## Recursos
 
-Aba Loja
+### Aba Loja
 
-Dados da loja
+Dados da loja:
 
 - ID da loja
 - ID da sessão
+- Server
 - Código do GTM
 - Código do GA4
+- Código do UA
 - Código do Pixel do Facebook
 
-Úteis
+Ações rápidas:
 
-- Remover Tema
-- Remover Scripts Externos
-- Report de scripts inlines bloqueados por CSP
+- Acessar painel da loja via configuração opcional de dashboard
+- Ativar debug de conversões do Facebook
+- Remover tema
+- Remover scripts externos
+- Report de scripts inline sem `nonce` em páginas com CSP
+- Exportar relatório de scripts externos
 
-Histórico de uso da extensão
+Histórico:
 
-- Histórico das últimas 4 lojas visitadas.
+- Histórico das últimas 4 lojas visitadas
 
-Aba Ferramentas
+### Aba Ferramentas
 
-- Gerar CPF com um click
-- Limpar localStorage
+- Verificar atualizações da extensão
+- Gerar CPF com um clique
+- Capturar print da aba atual
 - Whats My Dns
-- Pagespeed
+- PageSpeed
 - Search Console
 - Sitemap
 - Robots
 - Tag Assistant
 - Documentação de APIs
-- Documentação de Temas
+- Documentação de temas
+
+### Aba Clipboard
+
+- Histórico das últimas cópias feitas no navegador
+- Atalho `Alt + Shift + V` para capturar texto da página
+- Clique em um item para copiar novamente
+- Limpeza rápida do histórico salvo
+
+### Aba Dev
+
+- Troca rápida entre ambientes configurados para páginas de `checkout`
+- Troca rápida entre ambientes configurados para páginas de `my-account`
+- A aba só aparece quando existem ambientes configurados em `src/config.js`
 
 ## Desenvolvimento
 

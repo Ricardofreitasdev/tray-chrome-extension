@@ -20,17 +20,19 @@
         :class="['tab-content', { 'tab-active': activeTab === index }]"
         class="tab-content"
       >
-        <slot v-if="activeTab === index" :name="tabName(index)" />
+        <slot v-if="activeTab === index" :name="tab.key" />
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import environments from '../config';
+import { useStoreDataStore } from '../store/storeDataStore';
 
 const activeTab = ref(0);
+const $store = useStoreDataStore();
 const TAB_ITEMS = {
   store: {
     key: 'store',
@@ -68,6 +70,18 @@ const TAB_ITEMS = {
       </svg>
     `,
   },
+  settings: {
+    key: 'settings',
+    label: 'Config',
+    icon: `
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path
+          fill="currentColor"
+          d="M19.14 12.94c.04-.31.06-.63.06-.94s-.02-.63-.06-.94l2.03-1.58a.5.5 0 0 0 .12-.64l-1.92-3.32a.5.5 0 0 0-.6-.22l-2.39.96a7.14 7.14 0 0 0-1.63-.94l-.36-2.54a.49.49 0 0 0-.49-.42h-3.84a.49.49 0 0 0-.49.42l-.36 2.54c-.58.23-1.12.54-1.63.94l-2.39-.96a.5.5 0 0 0-.6.22L2.71 8.84a.5.5 0 0 0 .12.64L4.86 11c-.04.31-.06.64-.06.96s.02.65.06.96l-2.03 1.52a.5.5 0 0 0-.12.64l1.92 3.32a.5.5 0 0 0 .6.22l2.39-.96c.5.39 1.05.71 1.63.94l.36 2.54c.05.24.25.42.49.42h3.84c.24 0 .44-.18.49-.42l.36-2.54c.58-.23 1.13-.55 1.63-.94l2.39.96a.5.5 0 0 0 .6-.22l1.92-3.32a.5.5 0 0 0-.12-.64l-2.03-1.52ZM12 15.5A3.5 3.5 0 1 1 12 8.5a3.5 3.5 0 0 1 0 7Z"
+        />
+      </svg>
+    `,
+  },
   dev: {
     key: 'dev',
     label: 'Dev',
@@ -75,44 +89,52 @@ const TAB_ITEMS = {
       <svg viewBox="0 0 24 24" aria-hidden="true">
         <path
           fill="currentColor"
-          d="M20 3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2ZM9.29 15.29 8 16.59 3.41 12 8 7.41l1.29 1.3L6 12l3.29 3.29ZM12 17h-2l2-10h2l-2 10Zm3.71-1.71L14.41 14 17.7 10.71 21 14l-1.29 1.29L16.41 12l-.7-.71-.71.71 3.29 3.29Z"
+          d="m9.4 16.6-4.6-4.6 4.6-4.6L8 6l-6 6 6 6 1.4-1.4Zm5.2 0 4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4Z"
         />
       </svg>
     `,
   },
 };
 
-const tabs = ref([TAB_ITEMS.store, TAB_ITEMS.tools, TAB_ITEMS.clipboard]);
+const tabs = computed(() => {
+  const items = [TAB_ITEMS.store, TAB_ITEMS.tools];
 
-onMounted(() => {
-  setDevEnvironment();
-});
+  if ($store.settings.clipboardHistory) {
+    items.push(TAB_ITEMS.clipboard);
+  }
 
-const setDevEnvironment = () => {
+  items.push(TAB_ITEMS.settings);
+
   const hasEnvs = environments.easy || environments.central;
   if (hasEnvs) {
-    tabs.value.push(TAB_ITEMS.dev);
+    items.push(TAB_ITEMS.dev);
   }
-};
 
-const tabName = (index) => {
-  return `tab-content-${index}`;
-};
+  return items;
+});
+
+watch(
+  () => tabs.value.length,
+  (length) => {
+    if (activeTab.value >= length) {
+      activeTab.value = Math.max(length - 1, 0);
+    }
+  }
+);
 </script>
 
 <style lang="scss">
 .tab-buttons {
   display: flex;
   gap: 8px;
-  margin-bottom: 12px;
 }
 
 .tab-buttons button {
   display: grid;
   place-items: center;
-  background-color: rgba(255, 255, 255, 0.03);
-  color: #8b949e;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background-color: var(--surface-3);
+  color: var(--text-dim);
+  border: 1px solid var(--border-soft);
   border-radius: 12px;
   padding: 12px;
   cursor: pointer;
@@ -125,15 +147,15 @@ const tabName = (index) => {
 }
 
 .tab-buttons button:hover {
-  background: rgba(255, 255, 255, 0.06);
-  border-color: rgba(88, 166, 255, 0.26);
-  color: #c9d1d9;
+  background: var(--surface-4);
+  border-color: var(--accent-border);
+  color: var(--text-hover);
 }
 
 .tab-buttons button.active {
-  background: rgba(88, 166, 255, 0.08);
-  border-color: rgba(88, 166, 255, 0.42);
-  color: #58a6ff;
+  background: var(--accent-soft);
+  border-color: var(--accent-border-strong);
+  color: var(--accent);
   transform: translateY(-1px);
 }
 

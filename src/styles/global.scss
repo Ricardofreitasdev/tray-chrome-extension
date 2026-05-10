@@ -1,5 +1,56 @@
 @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap');
 
+:root,
+html[data-theme='dark'] {
+  --app-bg: #0d1117;
+  --surface-1: #161b22;
+  --surface-2: #21262d;
+  --surface-3: rgba(255, 255, 255, 0.03);
+  --surface-4: rgba(255, 255, 255, 0.06);
+  --surface-5: rgba(255, 255, 255, 0.015);
+  --surface-soft: rgba(255, 255, 255, 0.025);
+  --border-soft: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.12);
+  --text-primary: #f0f6fc;
+  --text-secondary: #7d8590;
+  --text-muted: #93a1b3;
+  --text-dim: #8b949e;
+  --text-hover: #c9d1d9;
+  --accent: #58a6ff;
+  --accent-soft: rgba(88, 166, 255, 0.08);
+  --accent-border: rgba(88, 166, 255, 0.26);
+  --accent-border-strong: rgba(88, 166, 255, 0.42);
+  --success-soft: rgba(35, 134, 54, 0.08);
+  --success-border: rgba(35, 134, 54, 0.55);
+  --error-soft: rgba(248, 81, 73, 0.08);
+  --error-border: rgba(248, 81, 73, 0.45);
+}
+
+html[data-theme='light'] {
+  --app-bg: #f5f7fb;
+  --surface-1: #ffffff;
+  --surface-2: #e8edf5;
+  --surface-3: rgba(15, 23, 42, 0.04);
+  --surface-4: rgba(15, 23, 42, 0.08);
+  --surface-5: rgba(15, 23, 42, 0.02);
+  --surface-soft: rgba(15, 23, 42, 0.03);
+  --border-soft: rgba(15, 23, 42, 0.1);
+  --border-strong: rgba(15, 23, 42, 0.16);
+  --text-primary: #162033;
+  --text-secondary: #516079;
+  --text-muted: #697890;
+  --text-dim: #5f6f88;
+  --text-hover: #0f172a;
+  --accent: #0f6bdc;
+  --accent-soft: rgba(15, 107, 220, 0.1);
+  --accent-border: rgba(15, 107, 220, 0.22);
+  --accent-border-strong: rgba(15, 107, 220, 0.36);
+  --success-soft: rgba(5, 150, 105, 0.09);
+  --success-border: rgba(5, 150, 105, 0.35);
+  --error-soft: rgba(220, 38, 38, 0.08);
+  --error-border: rgba(220, 38, 38, 0.25);
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -9,10 +60,11 @@
 body {
   font-family: 'Lato', sans-serif;
   color: $text-color;
+  background: var(--app-bg);
 }
 
 a {
-  color: #2f81f7;
+  color: var(--accent);
   text-decoration: none;
   transition: ease-in-out 0.3s;
   cursor: pointer;
@@ -20,4 +72,11 @@ a {
 
 a:hover {
   text-decoration: underline;
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
 }

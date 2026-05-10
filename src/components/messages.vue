@@ -15,7 +15,7 @@ const $toast = useToastStore();
 .messages {
   font-size: 14px;
   text-align: center;
-  background: #0d1117;
+  background: var(--app-bg);
   opacity: 0.9;
   width: 100%;
   position: fixed;

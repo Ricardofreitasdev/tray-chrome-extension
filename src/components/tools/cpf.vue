@@ -51,7 +51,7 @@ const gerarCPF = async () => {
   transition: ease-in-out 0.3s;
 
   &:hover {
-    background: #383d44;
+    background: var(--surface-4);
   }
 }
 

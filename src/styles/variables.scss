@@ -1,5 +1,5 @@
-$bg-color: #161b22;
-$bg-color-2: #21262d;
-$text-color: #7d8590;
-$text-color-2: #2f81f7;
-$icons-color: #2f81f7;
+$bg-color: var(--surface-1);
+$bg-color-2: var(--surface-2);
+$text-color: var(--text-secondary);
+$text-color-2: var(--accent);
+$icons-color: var(--accent);

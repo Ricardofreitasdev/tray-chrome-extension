@@ -20,6 +20,13 @@ export const useStoreDataStore = defineStore('storeData', {
     },
     storeHistory: [],
     clipboardHistory: [],
+    theme: 'dark',
+    extensionSettings: {
+      darkTheme: true,
+      clipboardHistory: true,
+      screenshot: true,
+      cardGenerator: true,
+    },
     configs: {
       easy: [],
       central: [],
@@ -48,6 +55,8 @@ export const useStoreDataStore = defineStore('storeData', {
     hasDevUrls: (state) =>
       state.configs.easy.length > 0 || state.configs.central.length > 0,
     hasAvailableUpdate: (state) => state.update.status === 'update-available',
+    currentTheme: (state) => state.theme,
+    settings: (state) => state.extensionSettings,
   },
 
   actions: {
@@ -62,6 +71,15 @@ export const useStoreDataStore = defineStore('storeData', {
     },
     setClipboardHistory(history) {
       this.clipboardHistory = history || [];
+    },
+    setTheme(theme) {
+      this.theme = theme;
+    },
+    setExtensionSettings(settings) {
+      this.extensionSettings = {
+        ...this.extensionSettings,
+        ...settings,
+      };
     },
     setConfigs(configs) {
       this.configs = configs;

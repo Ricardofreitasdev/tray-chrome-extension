@@ -82,7 +82,7 @@ onMounted(async () => {
   gap: 12px;
 
   strong {
-    color: #f0f6fc;
+    color: var(--text-primary);
     display: block;
     margin-bottom: 3px;
   }
@@ -98,20 +98,20 @@ onMounted(async () => {
 }
 
 .clipboard-item {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--surface-3);
+  border: 1px solid var(--border-soft);
   border-radius: 10px;
   padding: 10px 12px;
   cursor: pointer;
 }
 
 .clipboard-item:hover {
-  border-color: rgba(88, 166, 255, 0.26);
-  background: rgba(88, 166, 255, 0.08);
+  border-color: var(--accent-border);
+  background: var(--accent-soft);
 }
 
 .clipboard-text {
-  color: #f0f6fc;
+  color: var(--text-primary);
   word-break: break-word;
 }
 
@@ -127,16 +127,16 @@ onMounted(async () => {
 }
 
 .button.secondary {
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: var(--surface-4);
+  border: 1px solid var(--border-strong);
   padding: 8px 10px;
   border-radius: 8px;
-  color: #f0f6fc;
+  color: var(--text-primary);
   cursor: pointer;
 }
 
 code {
-  background: rgba(255, 255, 255, 0.06);
+  background: var(--surface-4);
   border-radius: 4px;
   padding: 1px 4px;
 }

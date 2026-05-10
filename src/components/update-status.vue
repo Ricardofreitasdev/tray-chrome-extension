@@ -5,9 +5,6 @@
         <strong>Atualizações</strong>
         <p v-if="showMessage">{{ statusMessage }}</p>
       </div>
-      <button class="secondary" :disabled="isChecking" @click="emit('check')">
-        {{ isChecking ? 'Verificando...' : 'Verificar' }}
-      </button>
     </div>
 
     <div class="meta">
@@ -61,8 +58,6 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(['check']);
-
 const hasUpdate = computed(() => props.status === 'update-available');
 const isChecking = computed(() => props.status === 'checking');
 const hasError = computed(() => props.status === 'error');
@@ -104,29 +99,22 @@ const statusMessage = computed(() => {
 
 <style lang="scss" scoped>
 .update-card {
-  background: linear-gradient(
-    135deg,
-    rgba(47, 129, 247, 0.14),
-    rgba(22, 27, 34, 0.96)
-  );
-  border: 1px solid rgba(47, 129, 247, 0.25);
-  border-radius: 4px;
-  padding: 8px;
-  margin-bottom: 8px;
+  background: transparent;
+  border: 1px solid var(--border-soft);
+  border-radius: 10px;
+  padding: 10px;
 }
 
 .header {
   display: flex;
   gap: 12px;
-  align-items: center;
-  justify-content: space-between;
 
   .copy {
     min-width: 0;
   }
 
   strong {
-    color: #f0f6fc;
+    color: var(--text-primary);
     display: block;
     margin-bottom: 4px;
     font-size: 13px;
@@ -142,56 +130,32 @@ const statusMessage = computed(() => {
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
-  margin-top: 10px;
+  margin-top: 8px;
   font-size: 11px;
-  color: #93a1b3;
+  color: var(--text-muted);
 }
 
 .actions {
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
-  margin-top: 12px;
-}
-
-button {
-  border: 1px solid rgba(240, 246, 252, 0.16);
-  background: rgba(255, 255, 255, 0.06);
-  color: #f0f6fc;
-  border-radius: 8px;
-  padding: 7px 10px;
-  font-size: 12px;
-  white-space: nowrap;
-  cursor: pointer;
-}
-
-button:disabled {
-  opacity: 0.6;
-  cursor: wait;
+  margin-top: 10px;
 }
 
 .is-update-available {
-  border-color: rgba(35, 134, 54, 0.55);
-  background: linear-gradient(
-    135deg,
-    rgba(35, 134, 54, 0.2),
-    rgba(22, 27, 34, 0.96)
-  );
+  border-color: var(--success-border);
+  background: var(--success-soft);
 }
 
 .is-error {
-  border-color: rgba(248, 81, 73, 0.45);
-  background: linear-gradient(
-    135deg,
-    rgba(248, 81, 73, 0.14),
-    rgba(22, 27, 34, 0.96)
-  );
+  border-color: var(--error-border);
+  background: var(--error-soft);
 }
 
 .is-compact {
-  padding: 8px 10px;
-  background: rgba(255, 255, 255, 0.03);
-  border-color: rgba(255, 255, 255, 0.08);
+  padding: 10px;
+  background: var(--surface-5);
+  border-color: var(--border-soft);
 
   .header strong {
     margin-bottom: 0;

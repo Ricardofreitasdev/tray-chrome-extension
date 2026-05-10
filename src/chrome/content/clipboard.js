@@ -1,9 +1,9 @@
 (function () {
-  if (globalThis.__trayClipboardManagerInjected) {
+  if (window.__trayClipboardManagerInjected) {
     return;
   }
 
-  globalThis.__trayClipboardManagerInjected = true;
+  window.__trayClipboardManagerInjected = true;
 
   const OVERLAY_ID = 'tray-extension-clipboard-overlay';
   const TOAST_ID = 'tray-extension-clipboard-toast';
@@ -197,11 +197,15 @@
         cursor: pointer;
       }
 
-      #${SCREENSHOT_EDITOR_ID} .tray-shot-toolbar input[type='color']::-webkit-color-swatch-wrapper {
+      #${SCREENSHOT_EDITOR_ID}
+        .tray-shot-toolbar
+        input[type='color']::-webkit-color-swatch-wrapper {
         padding: 0;
       }
 
-      #${SCREENSHOT_EDITOR_ID} .tray-shot-toolbar input[type='color']::-webkit-color-swatch {
+      #${SCREENSHOT_EDITOR_ID}
+        .tray-shot-toolbar
+        input[type='color']::-webkit-color-swatch {
         border: none;
         border-radius: 8px;
       }
@@ -1093,7 +1097,7 @@
       return;
     }
 
-    if (!navigator.clipboard?.write || !globalThis.ClipboardItem) {
+    if (!navigator.clipboard?.write || !window.ClipboardItem) {
       showToast(
         'Copia indisponivel',
         'Seu navegador nao liberou copiar imagem nesta aba.'
@@ -1150,39 +1154,172 @@
     const root = document.createElement('div');
     root.id = SCREENSHOT_EDITOR_ID;
     root.innerHTML = `
-      <div class="tray-shot-selection-label">Arraste para selecionar a area do print</div>
+      <div class="tray-shot-selection-label">
+        Arraste para selecionar a area do print
+      </div>
       <div class="tray-shot-shell">
-        <img id="tray-shot-image" class="tray-shot-image" alt="Print capturado" />
+        <img
+          id="tray-shot-image"
+          class="tray-shot-image"
+          alt="Print capturado"
+        />
         <canvas id="tray-shot-draw" class="tray-shot-draw"></canvas>
       </div>
       <div class="tray-shot-toolbar">
-        <button class="primary" id="tray-shot-copy" title="Copiar imagem final" aria-label="Copiar imagem final" type="button">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M16 1H4c-1.1 0-2 .9-2 2v12h2V3h12V1Zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2Zm0 16H8V7h11v14Z" /></svg>
+        <button
+          class="primary"
+          id="tray-shot-copy"
+          title="Copiar imagem final"
+          aria-label="Copiar imagem final"
+          type="button"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              fill="currentColor"
+              d="
+                M16 1H4c-1.1 0-2 .9-2 2v12h2V3h12V1Z
+                m3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11
+                c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2Z
+                m0 16H8V7h11v14Z
+              "
+            />
+          </svg>
         </button>
-        <button id="tray-shot-crop" style="display: none;" title="Modo recorte" aria-label="Modo recorte" type="button">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M17 3H5a2 2 0 0 0-2 2v12h2V5h12V3Zm2 4H9a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2Zm0 12H9V9h10v10Z" /></svg>
+        <button
+          id="tray-shot-crop"
+          style="display: none;"
+          title="Modo recorte"
+          aria-label="Modo recorte"
+          type="button"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              fill="currentColor"
+              d="
+                M17 3H5a2 2 0 0 0-2 2v12h2V5h12V3Z
+                m2 4H9a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10
+                a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2Z
+                m0 12H9V9h10v10Z
+              "
+            />
+          </svg>
         </button>
-        <button id="tray-shot-arrow" title="Modo flecha" aria-label="Modo flecha" type="button">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="m4 12 1.41 1.41L11 7.83V20h2V7.83l5.59 5.59L20 12l-8-8-8 8Z" /></svg>
+        <button
+          id="tray-shot-arrow"
+          title="Modo flecha"
+          aria-label="Modo flecha"
+          type="button"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              fill="currentColor"
+              d="m4 12 1.41 1.41L11 7.83V20h2V7.83l5.59 5.59L20 12l-8-8-8 8Z"
+            />
+          </svg>
         </button>
-        <button id="tray-shot-text" title="Modo texto" aria-label="Modo texto" type="button">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M5 4v3h5.5v12h3V7H19V4H5Z" /></svg>
+        <button
+          id="tray-shot-text"
+          title="Modo texto"
+          aria-label="Modo texto"
+          type="button"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              fill="currentColor"
+              d="M5 4v3h5.5v12h3V7H19V4H5Z"
+            />
+          </svg>
         </button>
-        <button id="tray-shot-undo" title="Desfazer" aria-label="Desfazer" type="button">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12.5 8c-2.65 0-5.04 1.12-6.75 2.91L3 8.16V15h6.84l-2.66-2.66A7.95 7.95 0 0 1 12.5 10c3.04 0 5.64 1.72 6.95 4.22l1.82-.84C19.64 10.28 16.33 8 12.5 8Z" /></svg>
+        <button
+          id="tray-shot-undo"
+          title="Desfazer"
+          aria-label="Desfazer"
+          type="button"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              fill="currentColor"
+              d="
+                M12.5 8c-2.65 0-5.04 1.12-6.75 2.91L3 8.16V15h6.84
+                l-2.66-2.66A7.95 7.95 0 0 1 12.5 10c3.04 0 5.64 1.72
+                6.95 4.22l1.82-.84C19.64 10.28 16.33 8 12.5 8Z
+              "
+            />
+          </svg>
         </button>
-        <button id="tray-shot-reset" title="Resetar selecao" aria-label="Resetar selecao" type="button">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M13 3a9 9 0 0 0-9 9H1l4 4 4-4H6a7 7 0 1 1 2.05 4.95l-1.42 1.41A9 9 0 1 0 13 3Z" /></svg>
+        <button
+          id="tray-shot-reset"
+          title="Resetar selecao"
+          aria-label="Resetar selecao"
+          type="button"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              fill="currentColor"
+              d="
+                M13 3a9 9 0 0 0-9 9H1l4 4 4-4H6a7 7 0 1 1 2.05 4.95
+                l-1.42 1.41A9 9 0 1 0 13 3Z
+              "
+            />
+          </svg>
         </button>
-        <input id="tray-shot-color" title="Cor da anotacao" aria-label="Cor da anotacao" type="color" value="#ff5a47" />
-        <button id="tray-shot-download" title="Baixar imagem final" aria-label="Baixar imagem final" type="button">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M5 20h14v-2H5v2Zm7-18-5.5 5.5 1.42 1.42L11 5.84V16h2V5.84l3.08 3.08 1.42-1.42L12 2Z" /></svg>
+        <input
+          id="tray-shot-color"
+          title="Cor da anotacao"
+          aria-label="Cor da anotacao"
+          type="color"
+          value="#ff5a47"
+        />
+        <button
+          id="tray-shot-download"
+          title="Baixar imagem final"
+          aria-label="Baixar imagem final"
+          type="button"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              fill="currentColor"
+              d="
+                M5 20h14v-2H5v2Z
+                m7-18-5.5 5.5 1.42 1.42L11 5.84V16h2V5.84
+                l3.08 3.08 1.42-1.42L12 2Z
+              "
+            />
+          </svg>
         </button>
-        <button id="tray-shot-clear" title="Limpar anotacoes" aria-label="Limpar anotacoes" type="button">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M16 9v10H8V9h8m-1.5-6h-5l-1 1H5v2h14V4h-3.5l-1-1ZM18 7H6v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7Z" /></svg>
+        <button
+          id="tray-shot-clear"
+          title="Limpar anotacoes"
+          aria-label="Limpar anotacoes"
+          type="button"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              fill="currentColor"
+              d="
+                M16 9v10H8V9h8
+                m-1.5-6h-5l-1 1H5v2h14V4h-3.5l-1-1Z
+                M18 7H6v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7Z
+              "
+            />
+          </svg>
         </button>
-        <button id="tray-shot-close" title="Fechar editor" aria-label="Fechar editor" type="button">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z" /></svg>
+        <button
+          id="tray-shot-close"
+          title="Fechar editor"
+          aria-label="Fechar editor"
+          type="button"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              fill="currentColor"
+              d="
+                M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12
+                5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12
+                19 6.41Z
+              "
+            />
+          </svg>
         </button>
       </div>
     `;

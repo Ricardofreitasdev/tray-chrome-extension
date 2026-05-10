@@ -1,25 +1,32 @@
 <template>
   <div class="board">
     <Tabs>
-      <template #tab-content-0>
+      <template #store>
         <Store />
       </template>
-      <template #tab-content-1>
-        <Settings />
+      <template #tools>
+        <Tools />
       </template>
-      <template #tab-content-2>
+      <template #clipboard>
         <Clipboard />
       </template>
-      <template #tab-content-3>
+      <template #settings>
+        <Settings />
+      </template>
+      <template #dev>
         <Dev />
       </template>
     </Tabs>
     <Messages />
-    <footer class="footer-message">
-      <span>version {{ version }}</span>
-      <span v-if="$store.hasAvailableUpdate" class="update-pill">
-        nova: {{ $store.update.latestVersion }}
-      </span>
+    <footer class="board-footer">
+      <span>Desenvolvido por</span>
+      <a
+        href="https://www.linkedin.com/in/ricardo-freitas-desenvolvedor/"
+        target="_blank"
+        rel="noreferrer"
+      >
+        Ricardo Freitas
+      </a>
     </footer>
   </div>
 </template>
@@ -29,6 +36,7 @@ import { ref, onMounted } from 'vue';
 
 import Tabs from './components/tabs.vue';
 import Store from './pages/store.vue';
+import Tools from './pages/tools.vue';
 import Clipboard from './pages/clipboard.vue';
 import Dev from './pages/dev.vue';
 import Settings from './pages/settings.vue';
@@ -38,6 +46,8 @@ import { useStoreDataStore } from './store/storeDataStore';
 import useBrowserAction from './composables/useBrowserAction';
 import configs from './config';
 import useExtensionUpdate from './composables/useExtensionUpdate';
+import useExtensionSettings from './composables/useExtensionSettings';
+import useTheme from './composables/useTheme';
 
 const version = ref(packageJson.version);
 const $store = useStoreDataStore();
@@ -49,8 +59,14 @@ const {
 } =
   useBrowserAction();
 const { checkForUpdates } = useExtensionUpdate();
+const { loadSettings } = useExtensionSettings();
+const { applyTheme } = useTheme();
 
 onMounted(async () => {
+  const settings = await loadSettings();
+  const resolvedTheme = settings.darkTheme ? 'dark' : 'light';
+  $store.setTheme(resolvedTheme);
+  applyTheme(resolvedTheme);
   $store.setConfigs(configs);
   $store.setUpdate({ currentVersion: version.value });
   $store.setStoreData(await getStoreData());
@@ -61,36 +77,37 @@ onMounted(async () => {
 });
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .board {
-  background: #0d1117;
+  background: var(--app-bg);
   max-width: 302px;
   width: 450px;
   height: 480px;
   overflow-y: auto;
-  padding: 16px 16px 34px;
+  padding: 16px 16px 30px;
   position: relative;
 }
 
-.footer-message {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-  text-align: center;
-  font-size: 10px;
-  bottom: 2px;
-  left: 50%;
-  transform: translateX(-50%);
+.board-footer {
   position: absolute;
-  opacity: 0.75;
-  white-space: nowrap;
+  left: 16px;
+  right: 16px;
+  bottom: 8px;
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+  font-size: 10px;
+  color: var(--text-secondary);
+  opacity: 0.85;
 }
 
-.update-pill {
-  background: rgba(35, 134, 54, 0.18);
-  border: 1px solid rgba(35, 134, 54, 0.4);
-  border-radius: 999px;
-  color: #7ee787;
-  padding: 2px 6px;
+.board-footer a {
+  color: var(--text-secondary);
+  text-decoration: none;
+}
+
+.board-footer a:hover {
+  color: var(--text-hover);
+  text-decoration: underline;
 }
 </style>
