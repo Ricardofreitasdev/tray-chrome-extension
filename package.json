@@ -5,7 +5,7 @@
     "name": "Ricardo Freitas",
     "email": "ricardo.freitas@tray.net.br"
   },
-  "version": "1.0.7",
+  "version": "1.0.8",
   "type": "module",
   "engines": {
     "node": "^14.18.0 || >=16.0.0"
